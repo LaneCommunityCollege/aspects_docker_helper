@@ -1,0 +1,23 @@
+- name: restart docker
+  service:
+    state: restarted
+    name: docker
+    enabled: true
+  tags:
+    - aspects_docker_helper
+
+- name: start docker
+  service:
+    state: started
+    name: docker
+    enabled: true
+  tags:
+    - aspects_docker_helper
+
+- name: stop docker
+  service:
+    state: stopped
+    name: docker
+    enabled: false
+  tags:
+    - aspects_docker_helper

@@ -1,0 +1,26 @@
+- name: "aspects_docker_helper - Configure docker networks"
+  when: item.1.enabled
+  run_once: true
+  docker_network:
+    state: "{{ item.1.state }}"
+    network_name: "{{ item.1.network_name  }}"
+    driver: "{{ item.1.driver | default('bridge') }}"
+    driver_options: "{{ item.1.driver_options | default({}) }}"
+    ipam_config: "{{ item.1.ipam_config | default([]) }}"
+  loop: "{{ aspects_docker_helper_networks_items | default({}) | dictsort }}"
+  tags:
+    - "aspects_docker_helper"
+    - "aspects_docker_helper_networking"
+
+- name: "aspects_docker_helper - Add or update Docker secrets"
+  when: item.1.enabled
+  run_once: true
+  docker_secret:
+    state: "{{ item.1.state }}"
+    name: "{{ item.1.name }}"
+    data: "{{ item.1.data }}"
+    labels: "{{ item.1.labels }}"
+  loop: "{{ aspects_docker_helper_secrets_items | default({}) | dictsort }}"
+  tags:
+    - "aspects_docker_helper"
+    - "aspects_docker_helper_secrets"
