@@ -24,3 +24,15 @@
   tags:
     - "aspects_docker_helper"
     - "aspects_docker_helper_secrets"
+
+- name: "aspects_docker_helper - Add or update Docker volumes"
+  when: item.1.enabled
+  run_once: true
+  docker_volume:
+    state: "{{ item.1.state }}"
+    volume_name: "{{ item.1.volume_name }}"
+    labels: "{{ item.1.labels }}"
+  loop: "{{ aspects_docker_helper_volumes_items | default({}) | dictsort }}"
+  tags:
+    - "aspects_docker_helper"
+    - "aspects_docker_helper_secrets"
